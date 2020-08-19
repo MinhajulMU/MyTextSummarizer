@@ -97,7 +97,7 @@
                             <!--Hero form -->
                             <form action="#" class="search-box">
                                 <div class="input-form">
-                                    <input type="text" name="keywords" placeholder="News URL">
+                                    <input type="text" name="keywords" id="newsurl" placeholder="News URL">
                                     <!-- icon -->
                                     <div class="icon">
                                         <i class="fas fa-pencil-alt"></i>
@@ -112,10 +112,8 @@
                             </form>	
                         </div>
                         <div class="col-lg-12 ringkasan" >
-                            <h3>Summary:</h3>
-                            <p>
-                                Viralnya foto baliho tersebut akhirnya membuat netizen heboh. Akun Instagram Giring pun digeruduk netizen yang melontarkan beberapa komentar.
-                            </p>
+
+
                             <!-- <div class="popular-search text-center pt-30">
                                 <ul>
                                     <li><p>Popular search:</p></li>
@@ -233,23 +231,37 @@
 <script>
 
 $('.summarize').click(function(){
+    $('.ringkasan').html('');
     $('.summarize').prop('disabled',true);
     $('.summarize').html('loading ...');
-   console.log('loading ...'); 
+    let urlPredict = 'http://127.0.0.1:5000/predict2';
+    let newsurl = $('#newsurl').val();
+    $.ajax({
+        method: "POST",
+        data: {
+            'url': newsurl
+        },
+        url: urlPredict,
+        success: function(result){
+            result.charAt(0).toUpperCase();
+            $('.ringkasan').html(`
+                <h3>Summary:</h3>
+                <p>
+                    `+result+`
+                </p>
+
+            `);
+
+            $('.summarize').prop('disabled',false);
+            $('.summarize').html('Summarize');
+         }
+    });
+ 
+
+
 });
 
 
-var urls = 'http://newsapi.org/v2/top-headlines?' +
-          'country=us&' +
-          'apiKey=850a04506b4e48428942ec2127b14168';
-    // var req = new Request(url);
-    // fetch(req)
-    // .then(function(response) {
-    //     console.log(response.json());
-    // });
-    $.ajax({url: urls, success: function(result){
-        console.log(result);
-    }});
 
 
 </script>
