@@ -229,12 +229,25 @@
 <script src="./assets/js/main.js"></script>
 
 <script>
+let article = "alhamdulillah";
+function editString(article) {
+    article.charAt(0).toUpperCase();
+    article =  article.charAt(0).toUpperCase() + article.slice(1);
+    if (article.slice(-1) != '.' || article.slice(-1) != ',') {
+        article = article + '.';    
+    }
 
+    return article;    
+}
+
+
+
+console.log(article);
 $('.summarize').click(function(){
     $('.ringkasan').html('');
     $('.summarize').prop('disabled',true);
     $('.summarize').html('loading ...');
-    let urlPredict = 'http://127.0.0.1:5000/predict2';
+    let urlPredict = 'http://127.0.0.1:5000/predict';
     let newsurl = $('#newsurl').val();
     $.ajax({
         method: "POST",
@@ -247,11 +260,10 @@ $('.summarize').click(function(){
             $('.ringkasan').html(`
                 <h3>Summary:</h3>
                 <p>
-                    `+result+`
+                    `+editString(result)+`
                 </p>
 
             `);
-
             $('.summarize').prop('disabled',false);
             $('.summarize').html('Summarize');
          }
